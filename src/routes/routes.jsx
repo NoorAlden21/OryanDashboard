@@ -1,6 +1,6 @@
 
 
-
+import ComplaintsIndex from "../Componants/ComplaintsIndex";
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "../Componants/Layout";
 import Home from "../Componants/Home";
@@ -177,6 +177,10 @@ const router = createBrowserRouter([
        {
         path: attendanceRecord,
         element: <RecordAttendance />,
+      },
+      { 
+        path: "/complaints",
+        element: <ComplaintsIndex /> 
       },
 
     ],
