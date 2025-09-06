@@ -1,0 +1,138 @@
+/* ملف sidebar.css */
+.sidebar {
+    width: 280px;
+    height: 100vh;
+    background: linear-gradient(180deg, #47BD93 0%, #3aa57c 100%);
+    padding: 20px 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    direction: rtl;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    z-index: 1000;
+  }
+  
+  .logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  .logo {
+    width: 60px;
+    height: 60px;
+    background-color: white;
+    border-radius: 50%;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .app-name {
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .menu-list {
+    list-style: none;
+    padding: 0 15px;
+    margin: 0;
+    flex-grow: 1;
+  }
+  
+  .menu-item {
+    padding: 14px 20px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateX(-5px);
+  }
+  
+  .menu-item a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    margin-right: 15px;
+    flex-grow: 1;
+  }
+  
+  .icon {
+    width: 22px;
+    height: 22px;
+    filter: brightness(0) invert(1);
+  }
+  
+  .logout-section {
+    padding: 15px;
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  .logout-item {
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .logout-item:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .logout-item a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    margin-right: 15px;
+  }
+  
+  /* تأثيرات للعناصر النشطة */
+  .menu-item.active {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+  
+  .menu-item.active a {
+    color: #fff;
+    font-weight: 700;
+  }
+  
+  /* تصميم متجاوب */
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 70px;
+      overflow: hidden;
+    }
+    
+    .app-name, .menu-item a, .logout-item a {
+      display: none;
+    }
+    
+    .logo-container {
+      padding: 10px 5px;
+    }
+    
+    .logo {
+      width: 40px;
+      height: 40px;
+    }
+  }

@@ -1,0 +1,40 @@
+/* @import "tailwindcss";
+
+@theme {
+  --color-midnight: #BD4749;
+  --color-tahiti: #154339;
+        --color-primary: #2563eb;     
+        --color-accent: #f59e0b;     
+        --color-success: #22c55e;     
+        --color-error: #ef4444;      
+        --color-neutral: #f3f4f6;     
+        --color-textMain: #1f2937;    
+} */
+
+
+@import "tailwindcss";
+
+@theme {
+  /* -- الألوان الجديدة من مبرمج Flutter -- */
+
+  /* اللون الأساسي للتطبيق (Deep Navy Blue) */
+  --color-primary: #171939;
+
+  /* اللون الثانوي للأيقونات والعناصر المميزة (Golden Yellow) */
+  --color-accent: #F0B830;
+
+  /* لون النصوص الرئيسي (Dark Grayish Violet) */
+  --color-textMain: #403D51;
+
+  /* لون الخلفية العام (Background Color) */
+  --color-neutral: #EDEDED;
+
+
+  /* -- ألوان إضافية يمكنك الاحتفاظ بها أو تعديلها -- */
+  --color-success: #22c55e;
+  --color-error: #ef4444;
+
+  /* -- ألوان قديمة يمكنك حذفها أو إعادة استخدامها لشيء آخر -- */
+  /* --color-midnight: #BD4749; */
+  /* --color-tahiti: #154339; */
+}
