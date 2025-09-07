@@ -9,6 +9,9 @@ import Login from "../Componants/Login";
 import ErrorPage from "../error/ErrorPage";
 import AddStudentForm from "../Componants/AddStudentForm";
 import StudentDetails from "../Componants/StudentDetails";
+import ExamTermsIndex from "../Componants/ExamTermsIndex";
+import ExamsIndex from "../Componants/ExamsIndex";
+import ExamGradesEntry from "../Componants/ExamGradesEntry";
 import {
   mainRoute,
   loginRoute,
@@ -182,6 +185,9 @@ const router = createBrowserRouter([
         path: "/complaints",
         element: <ComplaintsIndex /> 
       },
+      { path: "/exam-terms", element: <ExamTermsIndex /> },
+      { path: "/exams", element: <ExamsIndex /> },
+      { path: "/exams/:examId/grades", element: <ExamGradesEntry /> },
 
     ],
   },

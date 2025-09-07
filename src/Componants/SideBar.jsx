@@ -64,6 +64,8 @@ export default function SideBar() {
           <NavItem to={classType} icon={<Library size={20} />}>أنواع الفصول</NavItem>
           <NavItem to={subject} icon={<BookOpen size={20} />}>المواد الدراسية</NavItem>
           <NavItem to={attendance} icon={<BookOpen size={20} />}>الغيابات</NavItem>
+          <NavItem to="/exam-terms" icon={<Library size={20} />}>فترات الامتحان</NavItem>
+          <NavItem to="/exams" icon={<BookOpen size={20} />}>الامتحانات</NavItem>
 
           {/* Use the constant if you have it: to={complaintsRoute} */}
           <NavItem to="/complaints" icon={<MessageSquareWarning size={20} />}>الشكاوى</NavItem>

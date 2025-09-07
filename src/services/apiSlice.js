@@ -4,10 +4,19 @@ import Cookies from "js-cookie";
 
 export const apiSlice = createApi({
   reducerPath: "api",
-  tagTypes: ["Complaint"],
+  tagTypes: [
+    "Complaint",
+    // ↓↓↓ جديدة
+    "ExamTerms",
+    "ExamTerm",
+    "Exams",
+    "Exam",
+    "Grades",
+  ],
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8000/api/",
+    baseUrl: "http://10.27.1.3:8000/api/",
     prepareHeaders: (headers) => {
+      headers.set("Accept", "application/json");
       const token = Cookies.get("token");
       if (token) headers.set("Authorization", `Bearer ${token}`);
       return headers;
