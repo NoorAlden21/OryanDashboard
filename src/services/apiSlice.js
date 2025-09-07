@@ -14,7 +14,7 @@ export const apiSlice = createApi({
     "Grades",
   ],
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://10.27.1.3:8000/api/",
+    baseUrl: "http://192.168.137.234:8000/api/",
     prepareHeaders: (headers) => {
       headers.set("Accept", "application/json");
       const token = Cookies.get("token");

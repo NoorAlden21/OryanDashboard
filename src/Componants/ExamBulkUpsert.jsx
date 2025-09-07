@@ -163,7 +163,7 @@ export default function ExamBulkUpsert() {
                 disabled={!classTypeId}
                 className="px-3 py-2 rounded-lg bg-primary text-white hover:opacity-90 disabled:opacity-50 flex items-center gap-2"
               >
-                <Plus size={16} /> إضافة صف
+                <Plus size={16} /> إضافة امتحان
               </button>
             </div>
           </div>
