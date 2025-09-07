@@ -12,6 +12,7 @@ import StudentDetails from "../Componants/StudentDetails";
 import ExamTermsIndex from "../Componants/ExamTermsIndex";
 import ExamsIndex from "../Componants/ExamsIndex";
 import ExamGradesEntry from "../Componants/ExamGradesEntry";
+import ExamBulkUpsert from "../Componants/ExamBulkUpsert";
 import {
   mainRoute,
   loginRoute,
@@ -188,6 +189,8 @@ const router = createBrowserRouter([
       { path: "/exam-terms", element: <ExamTermsIndex /> },
       { path: "/exams", element: <ExamsIndex /> },
       { path: "/exams/:examId/grades", element: <ExamGradesEntry /> },
+      { path: "/exam-terms/:termId/exams/bulk", element: <ExamBulkUpsert /> },
+
 
     ],
   },

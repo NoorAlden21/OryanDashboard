@@ -1,6 +1,7 @@
 // src/Componants/ExamTermsIndex.jsx
 import React from "react";
 import { Loader2, Plus, X } from "lucide-react";
+import { Link } from "react-router-dom";
 import {
   useListExamTermsQuery,
   usePublishExamTermMutation,
@@ -113,12 +114,12 @@ export default function ExamTermsIndex() {
               <div className="col-span-3">{t.academic_year}</div>
               <div className="col-span-2">{t.term}</div>
               <div className="col-span-2 text-left">
-                <a
-                  href={`/exam-terms/${t.id}/exams/bulk`}
-                  className="px-3 py-1.5 rounded-lg border border-slate-300 hover:bg-slate-50 text-sm mr-2"
-                >
-                  تخطيط الامتحانات
-                </a>
+                <Link
+                    to={`/exam-terms/${t.id}/exams/bulk`}
+                    className="px-3 py-1.5 rounded-lg border border-slate-300 hover:bg-slate-50 text-sm mr-2"
+                  >
+                    تخطيط الامتحانات
+                </Link>
                 <button
                   onClick={() => onPublish(t.id)}
                   className="px-3 py-1.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 text-sm"

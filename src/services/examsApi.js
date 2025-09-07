@@ -1,121 +1,132 @@
+// src/services/examsApi.js
 import { apiSlice } from "./apiSlice";
 
 export const examsApi = apiSlice.injectEndpoints({
   endpoints: (build) => ({
-    // ===== Exam Terms =====
+    /* =========================
+     * Exam Terms
+     * =======================*/
     listExamTerms: build.query({
-      query: (params = {}) => ({ url: "admin/exam-terms", params }),
-      providesTags: (result) =>
-        result?.terms?.data
-          ? [
-              ...result.terms.data.map((t) => ({ type: "ExamTerm", id: t.id })),
-              { type: "ExamTerms", id: "LIST" },
-            ]
-          : [{ type: "ExamTerms", id: "LIST" }],
+      query: ({ page = 1 } = {}) => `admin/exam-terms?page=${page}`,
     }),
     createExamTerm: build.mutation({
-      query: (body) => ({ url: "admin/exam-terms", method: "POST", body }),
-      invalidatesTags: [{ type: "ExamTerms", id: "LIST" }],
-    }),
-    updateExamTerm: build.mutation({
-      query: ({ id, ...body }) => ({
-        url: `admin/exam-terms/${id}`,
-        method: "PATCH",
+      query: (body) => ({
+        url: "admin/exam-terms",
+        method: "POST",
         body,
       }),
-      invalidatesTags: (res, err, { id }) => [
-        { type: "ExamTerm", id },
-        { type: "ExamTerms", id: "LIST" },
-      ],
     }),
     publishExamTerm: build.mutation({
       query: (id) => ({
         url: `admin/exam-terms/${id}/publish`,
         method: "POST",
       }),
-      invalidatesTags: (res, err, id) => [
-        { type: "ExamTerm", id },
-        { type: "ExamTerms", id: "LIST" },
-      ],
     }),
 
-    // bulk-upsert للامتحانات تحت تيرم
-    bulkUpsertExamsForTerm: build.mutation({
-      // body: { class_type_id, exams: [{ subject_id, scheduled_at, duration_minutes, room?, max_score?, notes? }] }
-      query: ({ examTermId, ...body }) => ({
-        url: `admin/exam-terms/${examTermId}/exams/bulk-upsert`,
-        method: "POST",
-        body,
-      }),
-      invalidatesTags: [{ type: "Exams", id: "LIST" }],
-    }),
-
-    // ===== Exams =====
+    /* =========================
+     * Exams
+     * =======================*/
     listExams: build.query({
-      query: (params = {}) => ({ url: "admin/exams", params }),
-      providesTags: (result) =>
-        result?.exams?.data
-          ? [
-              ...result.exams.data.map((e) => ({ type: "Exam", id: e.id })),
-              { type: "Exams", id: "LIST" },
-            ]
-          : [{ type: "Exams", id: "LIST" }],
+      query: (params = {}) => {
+        const qs = new URLSearchParams(
+          Object.entries(params).reduce((acc, [k, v]) => {
+            if (v !== undefined && v !== null && v !== "") acc[k] = v;
+            return acc;
+          }, {})
+        ).toString();
+        return `admin/exams${qs ? `?${qs}` : ""}`;
+      },
     }),
     publishExam: build.mutation({
-      query: (examId) => ({
-        url: `admin/exams/${examId}/publish`,
+      query: (id) => ({
+        url: `admin/exams/${id}/publish`,
         method: "POST",
       }),
-      invalidatesTags: (res, err, examId) => [
-        { type: "Exam", id: examId },
-        { type: "Exams", id: "LIST" },
-      ],
     }),
 
-    // ===== Grades =====
-    getExamStudents: build.query({
-      // optional query: ?class_id=
-      query: ({ examId, class_id }) => ({
-        url: `admin/exams/${examId}/students`,
-        params: class_id ? { class_id } : undefined,
+    // Bulk upsert exams for a term
+    bulkUpsertExams: build.mutation({
+      query: ({ termId, class_type_id, exams }) => ({
+        url: `admin/exam-terms/${termId}/exams/bulk-upsert`,
+        method: "POST",
+        body: { class_type_id, exams },
       }),
     }),
-    bulkUpsertGrades: build.mutation({
-      // body: { class_id?, records: [{ student_profile_id, status, score?, remark? }, ...] }
-      query: ({ examId, class_id, records }) => ({
+
+    /* =========================
+     * Exam Grades
+     * =======================*/
+    // Fetch students eligible for this exam (optional filter by class_id and/or only_missing)
+    getExamStudents: build.query({
+      query: ({ examId, class_id, only_missing } = {}) => {
+        const params = new URLSearchParams();
+        if (class_id !== undefined && class_id !== null && class_id !== "") {
+          params.set("class_id", class_id);
+        }
+        if (only_missing !== undefined && only_missing !== null) {
+          params.set("only_missing", only_missing ? 1 : 0);
+        }
+        const qs = params.toString();
+        return `admin/exams/${examId}/students${qs ? `?${qs}` : ""}`;
+      },
+    }),
+
+    // Insert/update grades in bulk
+    bulkUpsertExamGrades: build.mutation({
+      // backend accepts: { class_id?: number, records: [...] }
+      query: ({ examId, records, class_id }) => ({
         url: `admin/exams/${examId}/grades/bulk-upsert`,
         method: "POST",
-        body: { ...(class_id ? { class_id } : {}), records },
+        body: class_id ? { class_id, records } : { records },
       }),
-      invalidatesTags: (res, err, { examId }) => [
-        { type: "Grades", id: examId },
-      ],
     }),
-    publishGrades: build.mutation({
+
+    // Publish grades
+    publishExamGrades: build.mutation({
       query: (examId) => ({
         url: `admin/exams/${examId}/grades/publish`,
         method: "POST",
       }),
-      invalidatesTags: (res, err, examId) => [
-        { type: "Grades", id: examId },
-        { type: "Exam", id: examId },
-      ],
+    }),
+
+    // 🔹 Classrooms that belong to the exam’s class type (for dropdown in grades page)
+    listExamClassrooms: build.query({
+      query: (examId) => `admin/exams/${examId}/classrooms`,
+    }),
+
+    /* =========================
+     * Class Types (for bulk-upsert UI dropdowns)
+     * =======================*/
+    listClassTypes: build.query({
+      query: () => `admin/class-types`,
+    }),
+    listClassTypeSubjects: build.query({
+      query: (classTypeId) => `admin/class-types/${classTypeId}/subjects`,
     }),
   }),
-  overrideExisting: false,
 });
 
+// ── Hooks ────────────────────────────────────────────────────────────────────
 export const {
+  // Exam Terms
   useListExamTermsQuery,
   useCreateExamTermMutation,
-  useUpdateExamTermMutation,
   usePublishExamTermMutation,
-  useBulkUpsertExamsForTermMutation,
 
+  // Exams
   useListExamsQuery,
   usePublishExamMutation,
+  useBulkUpsertExamsMutation,
 
+  // Grades
   useGetExamStudentsQuery,
-  useBulkUpsertGradesMutation,
-  usePublishGradesMutation,
+  useBulkUpsertExamGradesMutation,
+  usePublishExamGradesMutation,
+
+  // Classrooms for an exam
+  useListExamClassroomsQuery,
+
+  // Class Types + Subjects (for dropdowns in bulk upsert page)
+  useListClassTypesQuery,
+  useListClassTypeSubjectsQuery,
 } = examsApi;
